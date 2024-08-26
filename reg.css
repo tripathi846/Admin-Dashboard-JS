@@ -1,0 +1,23 @@
+#adddata{
+    position: absolute;
+    top: 100px;
+    left: 300px;
+}
+
+.inputbox{
+   background-color: aqua;
+   align-items: center;
+   font-size: large;
+  
+}
+
+.inputbox  input{
+    padding:20px;
+    margin: 10px;
+   }
+
+   .inputbox span{
+    font-size: 20px;
+    font-weight: 700;
+   }
+   
