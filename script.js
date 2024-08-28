@@ -76,7 +76,7 @@ const show_form = () => {
     let data = await fetch(url);
     let response = await data.json();
   
-    console.log(response);
+    // console.log(response);
     document.querySelector("#showproductdata").innerHTML = response
       .map(
         (e) => `
@@ -104,83 +104,85 @@ const show_form = () => {
   }
 
 
+  // update function start
 
   let storeid = null;
 
-// Async function to update a product by ID
-async function upd(arg) {
-  // Store the product ID in a global variable
-  storeid = arg;
-
-  // Fetch the product data from the API endpoint
-  let data = await fetch(`http://localhost:4000/Registration/${arg}`);
-  let response = await data.json();
-  console.log(response);
-
-  // Show the update form and hide the add button
-  let selectclose = document.querySelector("#close");
-  selectclose.style.display = "block";
-  let selectadd = document.querySelector("#addbutton");
-  selectadd.style.display = "none";
-  let selectupdate = document.querySelector("#updatebutton");
-  selectupdate.style.display = "block";
-  let selectbg = document.querySelector("#website");
-  selectbg.style.filter = "blur(5px)";
-
-  // Show the product form and populate it with the product data
-  let select = document.querySelector("#product_form");
-  select.style.marginTop = "50px";
-  select.style.display = "block";
-  document.querySelector("#pname").value = response.product_name;
-  document.querySelector("#pprice").value = response.product_price;
-  document.querySelector("#pimage").value = response.product_image;
-  document.querySelector("#pbrand").value = response.product_brand;
-  document.querySelector("#preview").value = response.product_review;
-  document.querySelector("#prating").value = response.product_rating;
-}
-
-const updateproduct = () => {
-  // Get the updated product data from the form
-  let product_name = document.querySelector("#pname").value;
-  let product_price = document.querySelector("#pprice").value;
-  let product_image = document.querySelector("#pimage").value;
-  let product_brand = document.querySelector("#pbrand").value;
-  let product_review = document.querySelector("#preview").value;
-  let product_rating = document.querySelector("#prating").value;
-
-  // Create a new product object with the updated data
-  let product = {
-    product_name: product_name,
-    product_price: product_price,
-    product_image: product_image,
-    product_brand: product_brand,
-    product_review: product_review,
-    product_rating: product_rating,
+  async function upd(arg) {
+    let reg = ` <div class="inputbox">
+                  <input type="text" id="name" required="required">
+                  <span>name</span>
+                  <i></i>
+              </div>
+              <div class="inputbox">
+                  <input type="text" id="mobile" required="required">
+                  <span>mobile number</span>
+                  <i></i>
+              </div>
+              <div class="inputbox">
+                  <input type="text" id="email" required="required">
+                  <span>Username</span>
+                  <i></i>
+              </div>
+              <div class="inputbox">
+                  <input type="password" id="password" required="required">
+                  <span>password</span>
+                  <i></i>
+              </div>
+              
+          <button onclick="updateproduct()">Update</button>`;
+  
+  
+          document.querySelector('#adddata').innerHTML= reg;
+    storeid = arg;
+  
+    let data = await fetch(`http://localhost:4000/Registration/${arg}`);
+    let response = await data.json();
+    console.log(response);
+  
+    
+    
+    let selectbg = document.querySelector("#website");
+    selectbg.style.filter = "blur(5px)";
+  
+    let select = document.querySelector("#registration_form");
+     document.querySelector("#name").value=response.name;
+    document.querySelector("#email").value=response.email;
+    document.querySelector("#mobile").value=response.mobile;
+    document.querySelector("#password").value=response.password;
+  }
+  
+  const updateproduct = () => {
+    let name = document.querySelector("#name").value;
+    let email = document.querySelector("#email").value;
+    let mobile = document.querySelector("#mobile").value;
+    let password = document.querySelector("#password").value;
+  
+    let user = {
+      name:name,
+      email:email,
+      mobile:mobile,
+      password:password
+    };
+  
+    console.log(user);
+  
+    let url = `http://localhost:4000/Registration/${storeid}`;
+  
+    let method = {
+      method: "PUT",
+      header: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    };
+  
+    fetch(url, method);
+  
+    let selectbg = document.querySelector("#website");
+    selectbg.style.filter = "none";
+  
+    return false;
   };
-
-  console.log(product);
-
-  // Construct the URL for the API endpoint to update the product
-  let url = `http://localhost:4000/Product/${storeid}`;
-
-  // Define the request method as PUT and set the request body to the updated product data
-  let method = {
-    method: "PUT",
-    header: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(product),
-  };
-
-  // Send the update request to the API endpoint
-  fetch(url, method);
-
-  // Remove the blur effect from the website background
-  let selectbg = document.querySelector("#website");
-  selectbg.style.filter = "none";
-
-  // Prevent the default form submission behavior
-  return false;
-};
-
-// update function end
+  
+  // update function end

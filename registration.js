@@ -1,4 +1,5 @@
 const registration = () => {
+  
     let name = document.querySelector("#name").value;
     let email = document.querySelector("#email").value;
     let mobile = document.querySelector("#mobile").value;
